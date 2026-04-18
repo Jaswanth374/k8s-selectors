@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nginx-affinity
+  name: nginx-anti-affinity
   labels:
     env: test
 spec:
@@ -12,26 +12,13 @@ spec:
         nodeSelectorTerms:
         - matchExpressions:
           - key: topology.kubernetes.io/zone
-            operator: In
+            operator: NotIn
             values:
             - us-east-1d
-            - us-east-1c
-      #soft rule
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        preference:
-          matchExpressions:
           - key: project
-            operator: In
+            operator: NotIn
             values:
             - amazon
-      - weight: 10
-        preference:
-          matchExpressions:
-          - key: project
-            operator: In
-            values:
-            - roboshop
   containers:
   - name: nginx
     image: nginx
